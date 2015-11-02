@@ -12,3 +12,20 @@ if on_off :
     print "On"
 else:
     print "Off"
+
+
+list = []
+
+
+def add_add(gpio):
+    list.append({'gpio': gpio, 'status': False})
+
+def build_dict(seq, key):
+    return dict((d[key], dict(d, index=i)) for (i, d) in enumerate(seq))
+
+add_add(123)
+add_add(545)
+add_add(3)
+d = build_dict(list, key="gpio")
+print d[3]['index']
+
