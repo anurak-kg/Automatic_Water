@@ -1,7 +1,9 @@
 import time
 import RPi.GPIO as GPIO
 import Adafruit_DHT
+from datetime import datetime
 from w1thermsensor import W1ThermSensor
+import helper
 
 __author__ = 'Anurak'
 
@@ -10,6 +12,7 @@ class SystemProject(object):
     def __init__(self):
         pass
 
+    relay_list = []
     sensor_water = None
     GPIO_TRIGGER = None
     GPIO_ECHO = None
@@ -21,6 +24,7 @@ class SystemProject(object):
     ENABLE_RELAY = False
     RELAY = []
     IN_GPIO = [None, None, None, None]
+    relay_dict = None
 
     def setup(self):
         if self.GPIO_TRIGGER is not None:
@@ -98,17 +102,39 @@ class SystemProject(object):
         self.IN_GPIO = 0
 
     def add_relay(self, gpio):
-        self.RELAY.append({'gpio': gpio, 'current_status': False})
+        self.relay_list.append({'gpio': gpio, 'current_status': False})
         GPIO.setup(gpio, GPIO.OUT)
-
-    @staticmethod
-    def turn_on_relay(gpio):
-        GPIO.output(gpio, GPIO.HIGH)
-
-    @staticmethod
-    def turn_off_relay(gpio):
         GPIO.output(gpio, GPIO.LOW)
+        self.relay_dict = helper.build_dict(self.relay_list, 'gpio')
+
+    def relay_set_status(self, gpio, status):
+        self.relay_list[self.relay_get_index(gpio)]['current_status'] = status
+
+    def get_relay_status(self, gpio):
+        return self.relay_list[self.relay_get_index(gpio)]['current_status'];
+
+    def relay_get_index(self, gpio):
+        return self.relay_dict[gpio]['index']
+
+    def turn_on_relay(self, gpio):
+        GPIO.output(gpio, GPIO.HIGH)
+        self.relay_set_status(gpio, True)
+
+    def turn_off_relay(self, gpio):
+        GPIO.output(gpio, GPIO.LOW)
+        self.relay_set_status(gpio, False)
+
+    @staticmethod
+    def relay_get_state(gpio):
+        return GPIO.input(gpio)
 
     @staticmethod
     def setup_relay():
         GPIO.setmode(GPIO.BCM)
+
+    @staticmethod
+    def timer_check(start, end):
+        if helper.time_in_range(start, end):
+            return True
+        else:
+            return False
