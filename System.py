@@ -34,9 +34,8 @@ class SystemProject(object):
         if self.ENABLE_RELAY:
             self.setup_relay()
 
-    def set_ultra_sensor(self, dht_version, trigger, echo):
+    def set_ultra_sensor(self, status, trigger, echo):
         self.GPIO_ECHO = echo
-        self.DHT = dht_version
         self.GPIO_TRIGGER = trigger
         GPIO.setup(self.GPIO_TRIGGER, GPIO.OUT)  # Trigger
         GPIO.setup(self.GPIO_ECHO, GPIO.IN)  # Echo
