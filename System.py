@@ -128,9 +128,11 @@ class SystemProject(object):
     def relay_get_state(gpio):
         return GPIO.input(gpio)
 
-    @staticmethod
-    def setup_relay():
+    def setup_relay(self, gpios):
         GPIO.setmode(GPIO.BCM)
+        if gpios is not None:
+            for gpio in gpios:
+                self.add_relay(gpio)
 
     @staticmethod
     def timer_check(start, end):

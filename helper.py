@@ -13,3 +13,9 @@ def time_in_range(start, end):
         return start <= current_time <= end
     else:
         return start <= current_time or current_time <= end
+
+
+def print_terminal(ultra_sensor, water_temp, temperature, huminity):
+    print(datetime.datetime.today())
+    print "Distance : \t\t %.1f   Water Temp :\t %.1f  " % (ultra_sensor, water_temp)
+    print "Temperature : \t %.1f   Humidity : \t %.1f " % (temperature, huminity)
