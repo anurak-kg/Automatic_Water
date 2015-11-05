@@ -1,5 +1,10 @@
+from math import floor, ceil
+
 import RPi.GPIO as GPIO
 import time
+
+import helper
+from collections import Counter
 
 
 class Ultra_sensor:
@@ -7,7 +12,8 @@ class Ultra_sensor:
     GPIO_ECHO = None
     OUT_OF_RANG = 100  # Rang for Error
 
-    def __init__(self, trigger, echo):
+    def __init__(self, trigger, echo, number_of_sample=300):
+        self.number_of_sample = number_of_sample
         self.GPIO_ECHO = echo
         self.GPIO_TRIGGER = trigger
         GPIO.setmode(GPIO.BCM)
@@ -19,15 +25,19 @@ class Ultra_sensor:
         time.sleep(0.5)
 
     def get_ultra_sensor_rang(self):
+
         total_distances = 0
-        global x
-        for x in range(0, 10):
+        i = int(0)
+        list_distance = []
+        while i < self.number_of_sample:
             distance = self.get_pure_rang()
             if distance >= self.OUT_OF_RANG:
                 continue
-            if x > 0 and distance > 0:
+            if i >= 0 and 0 < distance < self.OUT_OF_RANG:
                 total_distances += distance
-        return total_distances / x
+                i += 1
+                list_distance.append(distance)
+        return total_distances / i
 
     def get_pure_rang(self):
         GPIO.output(self.GPIO_TRIGGER, True)

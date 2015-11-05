@@ -19,3 +19,25 @@ def print_terminal(ultra_sensor, water_temp, temperature, huminity):
     print(datetime.datetime.today())
     print "Distance : \t\t %.1f   Water Temp :\t %.1f  " % (ultra_sensor, water_temp)
     print "Temperature : \t %.1f   Humidity : \t %.1f " % (temperature, huminity)
+
+
+def mode(nums):
+    corresponding = {}
+    occurances = []
+    for i in nums:
+        count = nums.count(i)
+        corresponding.update({i: count})
+
+    for i in corresponding:
+        freq = corresponding[i]
+        occurances.append(freq)
+
+    maxFreq = max(occurances)
+
+    keys = corresponding.keys()
+    values = corresponding.values()
+
+    index_v = values.index(maxFreq)
+    global mode
+    mode = keys[index_v]
+    return mode
