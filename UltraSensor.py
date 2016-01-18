@@ -7,7 +7,7 @@ import helper
 from collections import Counter
 
 
-class Ultra_sensor:
+class UltraSensor:
     GPIO_TRIGGER = None
     GPIO_ECHO = None
     OUT_OF_RANG = 100  # Rang for Error
@@ -37,6 +37,9 @@ class Ultra_sensor:
                 total_distances += distance
                 i += 1
                 list_distance.append(distance)
+        print min(list_distance)
+        print max(list_distance)
+
         return total_distances / i
 
     def get_pure_rang(self):
