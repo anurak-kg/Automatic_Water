@@ -8,7 +8,7 @@ class Database:
     server_port = 6379
     SCREEN_MODE = "screen_location"
     WATER_LEVEL = "water_level"
-    SCREEN_RUNNING = "screen_running"
+    APP_RUNNING = "screen_running"
 
     def __init__(self, server_ip="localhost", port=6379, db=0):
         self.redis = client.StrictRedis(server_ip, port)
@@ -29,14 +29,14 @@ class Database:
     def get_screen_mode(self):
         return int(self.redis.get(self.SCREEN_MODE))
 
-    def set_screen_running(self, mode):
+    def set_app_running(self, mode):
         if mode:
-            self.redis.set(self.SCREEN_RUNNING, "True")
+            self.redis.set(self.APP_RUNNING, "True")
         else:
-            self.redis.set(self.SCREEN_RUNNING, "False")
+            self.redis.set(self.APP_RUNNING, "False")
 
-    def get_screen_running(self):
-        if self.redis.get(self.SCREEN_RUNNING) == "True":
+    def get_app_running(self):
+        if self.redis.get(self.APP_RUNNING) == "True":
             return True
         else:
             return False

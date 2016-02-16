@@ -42,9 +42,9 @@ class ScreenModule(threading.Thread):
         self._stop = threading.Event()
 
     def run(self):
-        print("Start Thread!")
-        self.database.set_screen_running(True)
-        while self.database.get_screen_running():
+        print("Start Display Thread!")
+        self.database.set_app_running(True)
+        while self.database.get_app_running():
 
             mode = self.database.get_screen_mode()
             if mode == DisplayScreen.MAIN:
