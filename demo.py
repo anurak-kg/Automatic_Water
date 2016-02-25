@@ -1,10 +1,10 @@
 from time import sleep
 
 from RPi import GPIO
-
 from Module import UltraSensor
 
 GPIO.cleanup()
+
 
 # relay = Relay(gpio_relay_1=26)
 #

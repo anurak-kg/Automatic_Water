@@ -3,7 +3,7 @@ import WaterChanger
 from PIL import Image
 from PIL import ImageFont
 from lib_tft24T import TFT24T
-from Database import Database
+from RedisDatabase import RedisDatabase
 import RPi.GPIO as GPIO
 import spidev
 
@@ -20,7 +20,7 @@ TFT = TFT24T(spidev.SpiDev(), GPIO, landscape=True)
 TFT.initLCD(DC, RST, LED, ce=1)
 draw = TFT.draw()
 TFT.clear((255, 255, 255))
-database = Database()
+database = RedisDatabase()
 database.test_connect()
 #  # Image of calculator !!!
 font = ImageFont.truetype('THSarabunNew.ttf', 22)

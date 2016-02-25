@@ -1,7 +1,7 @@
 import threading
 from time import sleep
 import configparser
-from Database import Database
+from RedisDatabase import RedisDatabase
 from Module.Relay import Relay
 from Module.UltraSensor import UltraSensor
 from ModuleReadThread import ModuleReadThread
@@ -17,6 +17,9 @@ print("## initial config parser")
 config = configparser.ConfigParser()
 config.read("config.ini")
 
+database = RedisDatabase()
+database.set_app_running(True)
+
 # ###########################
 # ###### Initial Module #####
 # ###########################
@@ -26,25 +29,30 @@ relay = Relay(gpio_relay_1=26)
 
 # Start TFT Monitor
 print("## Start monitor")
+
 screen = ScreenModule()
 screen.start()
 
 print("## Start Module Thread")
-module = ModuleReadThread(name="Module")
-module.start()
+# module = ModuleReadThread()
+# module.start()
 
 print("## Start Main Thread")
-database = Database()
-database.set_app_running(True)
-
+ultra_sensor = UltraSensor(echo=12, trigger=6, number_of_sample=10)
 try:
-    while database.set_app_running():
-        sleep(3)
-        print threading.enumerate()
+    while database.get_app_running():
+        global water_ranges
+        water_ranges = ultra_sensor.get_perfect_rang()
+        water_ranges = None
+        print "Update hardware timeout!!"
+        sleep(5)
+        database.set_water_level(water_ranges)
+        print("Water ranges = " + str(water_ranges))
+
 
 except KeyboardInterrupt:
     database.set_app_running(False)
     print("Exiting....")
-    print("Current App Status = " + database.get_app_running())
+    print("Current App Status = " + str(database.get_app_running()))
     print threading.enumerate()
     raise

@@ -1,6 +1,7 @@
 # coding=utf-8
 import threading
 from time import sleep
+from interruptingcow import timeout
 
 import datetime
 
@@ -17,26 +18,20 @@ import RPi.GPIO as GPIO
 import spidev
 
 
-class ScreenModule(threading.Thread):
-    def __init__(self, thread_id=None):
-        super(ScreenModule, self).__init__()
-
-        self.enable_water_level = True
-
-        self.thread_id = thread_id
+class MainApplication(object):
+    def __init__(self):
+        print("Welcome")
 
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
-
+        self.enable_water_level = True
         dc = 22
         rst = 18
         led = 23
 
         self.TFT = TFT24T(spidev.SpiDev(), GPIO, landscape=True)
-
         self.TFT.initLCD(dc, rst, led, ce=1)
         self.init_ip()
-
         self.draw = self.TFT.draw()
         self.TFT.clear((255, 255, 255))
         self.font = ImageFont.truetype('THSarabunNew.ttf', 24)
@@ -44,11 +39,11 @@ class ScreenModule(threading.Thread):
         self.display = DisplayScreen()
         self.database = RedisDatabase()
         self.database.set_screen_mode(DisplayScreen.MAIN)
-        self._stop = threading.Event()
 
         self.initial_hardware_module()
+        self.start()
 
-    def run(self):
+    def start(self):
         print("Start Main Thread!")
         self.database.set_app_running(True)
         while self.database.get_app_running():
@@ -58,6 +53,12 @@ class ScreenModule(threading.Thread):
                 self.display_main()
             elif mode == DisplayScreen.CLEAR:
                 self._display_clear()
+
+            try:
+                self.update_hardware_module()
+            except Exception:
+                print("Error")
+
             sleep(1)
         print("Stopped!")
 
@@ -96,7 +97,8 @@ class ScreenModule(threading.Thread):
         global water_ranges
         if self.enable_water_level:
             try:
-                water_ranges = self.ultra_sensor.get_perfect_rang()
+                with timeout(5, exception=TimeoutError):
+                    water_ranges = self.ultra_sensor.get_perfect_rang()
             except TimeoutError:
                 water_ranges = None
                 print "Update hardware timeout!!"
