@@ -20,6 +20,7 @@ import spidev
 
 class MainApplication(object):
     def __init__(self):
+        self.debug = True
         print("Welcome")
 
         GPIO.setmode(GPIO.BCM)
@@ -62,7 +63,7 @@ class MainApplication(object):
             sleep(1)
         print("Stopped!")
 
-    @fn_timer
+    # @fn_timer
     def display_main(self):
         self.TFT.load_wallpaper("bg.jpg")
         text = u'ระดับน้ำ :  {:10.4f} cm'
@@ -104,4 +105,5 @@ class MainApplication(object):
                 print "Update hardware timeout!!"
                 sleep(5)
         self.database.set_water_level(water_ranges)
-        print("Water ranges = " + str(water_ranges))
+        if self.debug:
+            print("Water ranges = " + str(water_ranges))

@@ -1,19 +1,13 @@
-from time import sleep
+import ctypes
 
-from RPi import GPIO
-from Module import UltraSensor
+import datetime
 
-GPIO.cleanup()
+from Class.FlagsDate import FlagsDay
 
+flags = FlagsDay()
+flags.asByte = 98  # ->0010
 
-# relay = Relay(gpio_relay_1=26)
-#
-# relay.turn_on(relay.GPIO_OTHER_1)
-# sleep(1)
-# relay.turn_off(relay.GPIO_OTHER_1)
-rangSensor = UltraSensor.UltraSensor(echo=12, trigger=6)
-while True:
-    print "Rang = "
-    print rangSensor.get_ultra_sensor_rang()
-    sleep(1)
-GPIO.cleanup()
+today = datetime.date.today()
+day = today.strftime("%a")
+
+print("logout: %i" % getattr(flags, day))

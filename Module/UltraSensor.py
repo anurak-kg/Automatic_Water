@@ -40,22 +40,19 @@ class UltraSensor:
         total_distances = 0
         i = int(1)
         list_distance = []
-        timeout = time.time() + 5
 
         while i < self.number_of_sample:
             try:
-                if time.time() > timeout:
-                    print("Timeout")
-                    break
-                distance = self.get_pure_rang()
-                if distance >= self.OUT_OF_RANG:
-                    continue
+                with timeout(0.1, exception=TimeoutError):
+                    distance = self.get_pure_rang()
+                    if distance >= self.OUT_OF_RANG:
+                        continue
 
-                if i >= 0 and 0 < distance < self.OUT_OF_RANG:
-                    total_distances += distance
+                    if i >= 0 and 0 < distance < self.OUT_OF_RANG:
+                        total_distances += distance
 
-                i += 1
-                list_distance.append(distance)
+                    i += 1
+                    list_distance.append(distance)
 
             except TimeoutError:
                 print("Ultra sensor Time Out!")
