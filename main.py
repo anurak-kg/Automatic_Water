@@ -1,10 +1,11 @@
 import threading
 from time import sleep
+
 import configparser
-from RedisDatabase import RedisDatabase
-from Module.Relay import Relay
+
+from Class.RedisDatabase import RedisDatabase
+from Module.RelayOld import Relay
 from Module.UltraSensor import UltraSensor
-from ModuleReadThread import ModuleReadThread
 from ScreenModule import ScreenModule
 
 APP_VERSION = "0.0.1 Development  "

@@ -1,5 +1,5 @@
+from Class.RedisDatabase import RedisDatabase
 from MainApplication import MainApplication
-from RedisDatabase import RedisDatabase
 
 if __name__ == "__main__":
     database = RedisDatabase()

@@ -1,16 +1,11 @@
-from math import floor, ceil
+import time
 
 import RPi.GPIO as GPIO
-import time
+import configparser
 from interruptingcow import timeout
 
-import configparser
-
-import helper
-from collections import Counter
-
-from Class.Timeout import timelimit, TimeoutError
-from RedisDatabase import RedisDatabase
+from Class.RedisDatabase import RedisDatabase
+from Class.Timeout import TimeoutError
 
 
 class UltraSensor:

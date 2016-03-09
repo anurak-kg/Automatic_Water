@@ -34,6 +34,12 @@ class RedisDatabase:
     def get_screen_mode(self):
         return int(self.redis.get(self.SCREEN_MODE))
 
+    def get(self, name):
+        return self.redis.get(name=name)
+
+    def set(self, name, value):
+        self.redis.set(name, value)
+
     def set_app_running(self, mode):
         if mode:
             self.redis.set(self.APP_RUNNING, "True")

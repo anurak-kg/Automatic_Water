@@ -1,21 +1,18 @@
 # coding=utf-8
-import threading
+import datetime
+import socket
+import spidev
 from time import sleep
+
+import RPi.GPIO as GPIO
+from PIL import ImageFont
 from interruptingcow import timeout
 
-import datetime
-
-import socket
-from PIL import ImageFont
-
-from Class.Timeout import TimeoutError, timelimit
+from Class.RedisDatabase import RedisDatabase
+from Class.Timeout import TimeoutError
 from DisplayScreen import DisplayScreen
 from Module.UltraSensor import UltraSensor
-from helper import fn_timer
 from lib_tft24T import TFT24T
-from RedisDatabase import RedisDatabase
-import RPi.GPIO as GPIO
-import spidev
 
 
 class MainApplication(object):

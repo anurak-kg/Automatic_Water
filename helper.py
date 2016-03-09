@@ -1,7 +1,10 @@
-from functools import wraps
-
 import datetime
 import time
+from functools import wraps
+
+from dateutil import parser
+
+from Class.RedisDatabase import RedisDatabase
 
 __author__ = 'Anurak'
 
@@ -11,8 +14,11 @@ def build_dict(seq, key):
 
 
 def time_in_range(start, end):
-    import datetime
-    current_time = datetime.datetime.today().time()
+    # current_time = datetime.datetime.today().time()
+    database = RedisDatabase()
+
+    current_time = parser.parse(database.get("current_time")).time()
+    print current_time
     if start <= end:
         return start <= current_time <= end
     else:

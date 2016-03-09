@@ -9,7 +9,7 @@ class FlagsDay_bits(ctypes.LittleEndianStructure):
         ("Sun", c_uint8, 1),  # asByte & 1
         ("Mon", c_uint8, 1),  # asByte & 2
         ("Tue", c_uint8, 1),  # asByte & 4
-        ("Wen", c_uint8, 1),  # asByte & 8
+        ("Wed", c_uint8, 1),  # asByte & 8
         ("Thu", c_uint8, 1),  # asByte & 16
         ("Fri", c_uint8, 1),  # asByte & 32
         ("Sat", c_uint8, 1),  # asByte & 64

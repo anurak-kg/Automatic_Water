@@ -1,11 +1,11 @@
 # coding=utf-8
-import WaterChanger
-from PIL import Image
-from PIL import ImageFont
-from lib_tft24T import TFT24T
-from RedisDatabase import RedisDatabase
-import RPi.GPIO as GPIO
 import spidev
+
+import RPi.GPIO as GPIO
+from PIL import ImageFont
+
+from Class.RedisDatabase import RedisDatabase
+from lib_tft24T import TFT24T
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)

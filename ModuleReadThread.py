@@ -1,9 +1,6 @@
 import threading
 from time import sleep
 
-import configparser
-
-from RedisDatabase import RedisDatabase
 from Module.UltraSensor import UltraSensor
 
 
