@@ -1,5 +1,7 @@
 import RPi.GPIO as GPIO
 
+from Class.Log import Log
+
 
 class Relay:
     ACTIVATE = 1
@@ -21,16 +23,19 @@ class Relay:
             print("Error can't not found GPIO")
         else:
             GPIO.output(self.gpio, GPIO.HIGH)
+            Log.new(Log.DEBUG, "Turn On! at gpio = " + str(self.gpio))
 
     def turn_off(self):
         if self.gpio is None:
             print("Error can't not found GPIO")
         else:
             GPIO.output(self.gpio, GPIO.LOW)
+            Log.new(Log.DEBUG, "Turn Off! at gpio = " + str(self.gpio))
 
     def get_state(self):
         return GPIO.input(self.gpio)
 
     def clear_relay(self):
+        Log.new(Log.DEBUG, "Clear relay!")
         self.turn_off()
         GPIO.cleanup()

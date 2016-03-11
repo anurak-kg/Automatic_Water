@@ -1,35 +1,25 @@
-import threading
+from functools import wraps
+import errno
+import os
+import signal
 
-import sys
+class TimeoutError(Exception):
+    pass
 
+def timeout(seconds=10, error_message=os.strerror(errno.ETIME)):
+    def decorator(func):
+        def _handle_timeout(signum, frame):
+            raise TimeoutError(error_message)
 
-class TimeoutError(Exception): pass
+        def wrapper(*args, **kwargs):
+            signal.signal(signal.SIGALRM, _handle_timeout)
+            signal.alarm(seconds)
+            try:
+                result = func(*args, **kwargs)
+            finally:
+                signal.alarm(0)
+            return result
 
+        return wraps(func)(wrapper)
 
-def timelimit(timeout):
-    def internal(function):
-        def internal2(*args, **kw):
-            class Calculator(threading.Thread):
-                def __init__(self):
-                    threading.Thread.__init__(self)
-                    self.result = None
-                    self.error = None
-
-                def run(self):
-                    try:
-                        self.result = function(*args, **kw)
-                    except:
-                        self.error = sys.exc_info()[0]
-
-            c = Calculator()
-            c.start()
-            c.join(timeout)
-            if c.isAlive():
-                raise TimeoutError
-            if c.error:
-                raise c.error
-            return c.result
-
-        return internal2
-
-    return internal
+    return decorator

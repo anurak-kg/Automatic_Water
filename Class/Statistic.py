@@ -26,7 +26,7 @@ class Statistic:
         self.current_status["date"] = datetime.datetime.utcnow()
 
     def save(self):
-        print(self.stat.insert_one(self.current_status).inserted_id)
+        self.stat.insert_one(self.current_status)
         self.current_status = {}
 
     def update_and_save(self):

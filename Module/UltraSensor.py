@@ -2,10 +2,8 @@ import time
 
 import RPi.GPIO as GPIO
 import configparser
-from interruptingcow import timeout
-
 from Class.RedisDatabase import RedisDatabase
-from Class.Timeout import TimeoutError
+from Class.Timeout import TimeoutError, timeout
 
 
 class UltraSensor:
@@ -35,22 +33,23 @@ class UltraSensor:
         total_distances = 0
         i = int(1)
         list_distance = []
-
+        error_count = 0
         while i < self.number_of_sample:
             try:
-                with timeout(0.1, exception=TimeoutError):
-                    distance = self.get_pure_rang()
-                    if distance >= self.OUT_OF_RANG:
-                        continue
-
-                    if i >= 0 and 0 < distance < self.OUT_OF_RANG:
-                        total_distances += distance
-
-                    i += 1
-                    list_distance.append(distance)
-
+                if error_count >= 5:
+                    print("Ultra sensor Time Out!")
+                    return None
+                distance = self.get_pure_rang()
+                if distance >= self.OUT_OF_RANG:
+                    continue
+                if i >= 0 and 0 < distance < self.OUT_OF_RANG:
+                    total_distances += distance
+                i += 1
+                list_distance.append(distance)
             except TimeoutError:
-                print("Ultra sensor Time Out!")
+                error_count += 1
+                print("Ultra sensor Time Out! +++++++++")
+
                 return None
 
         # print min(list_distance)
