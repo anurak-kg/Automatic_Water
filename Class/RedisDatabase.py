@@ -11,6 +11,10 @@ class RedisDatabase:
     APP_RUNNING = "screen_running"
     ENABLE_WATER_SENSOR = "enable_water_sensor"
 
+    ENABLE_DHT_SENSOR = "enable_dht11_sensor"
+    HUMIDITY = "humidity"
+    TEMPERATURE = "temperature"
+
     def __init__(self, server_ip="localhost", port=6379, db=0):
 
         self.redis = client.StrictRedis(server_ip, port)

@@ -1,4 +1,5 @@
 import datetime
+import os
 import time
 from functools import wraps
 
@@ -42,6 +43,15 @@ def fn_timer(function):
 
     return function_timer
 
+def initial_mongodb():
+    try:
+        print("Initial Mongodb")
+        # call("")
+        os.system('sudo rm /var/lib/mongodb/mongod.lock')
+        os.system('sudo service mongodb start')
+    except Exception, e:
+        print("That's work!")
+        print(e)
 
 def mode(nums):
     corresponding = {}

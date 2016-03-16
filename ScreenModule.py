@@ -10,9 +10,9 @@ from PIL import ImageFont
 
 from Class.RedisDatabase import RedisDatabase
 from Class.Timeout import TimeoutError
+from Class.helper import fn_timer
 from DisplayScreen import DisplayScreen
 from Module.UltraSensor import UltraSensor
-from helper import fn_timer
 from lib_tft24T import TFT24T
 
 

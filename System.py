@@ -1,9 +1,10 @@
 import time
-import RPi.GPIO as GPIO
+
 import Adafruit_DHT
-from datetime import datetime
+import RPi.GPIO as GPIO
 from w1thermsensor import W1ThermSensor
-import helper
+
+from Class import helper
 
 __author__ = 'Anurak'
 

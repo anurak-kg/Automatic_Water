@@ -1,7 +1,7 @@
 import datetime
 from time import sleep
 
-import helper
+from Class import helper
 from Class.FlagsDate import FlagsDay
 from Module.Relay import Relay
 

@@ -1,8 +1,9 @@
 # coding=utf-8
-from time import sleep
 import datetime
+from time import sleep
+
 import System
-import helper
+from Class import helper
 
 __author__ = 'Anurak'
 

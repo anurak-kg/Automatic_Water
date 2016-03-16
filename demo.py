@@ -1,20 +1,9 @@
-import ctypes
-
 import datetime
-import os
-from time import sleep
 
-from subprocess import call
-
-import helper
-from Class.FlagsDate import FlagsDay
-from Class.Log import Log
-from Class.Statistic import Statistic
 from Class.TimeOnOff import TimeOnOff
-from Class.Timer import Timer
+from Module.DHT11 import DHT11
 from Module.Relay import Relay
-
-
+from Module.UltraSensor import UltraSensor
 
 relay_list = [Relay(name="Relay1",
                     gpio=26,
@@ -29,14 +18,19 @@ relay_list = [Relay(name="Relay1",
 # print("logout: %i" % getattr(flags, day))
 # print(type(getattr(flags, day)))
 # print("ss")
-initial_mongodb()
-timer = Timer(relay_list=relay_list)
+# timer = Timer(relay_list=relay_list)
+#
+# statistic = Statistic()
+# Log.new("Test")
+# for i in range(1, 100):
+#     statistic.update_and_save()
+#     print("Saved!")
+# # while True:
+# #     timer.check()
+# #     sleep(1)
+#
 
-statistic = Statistic()
-Log.new("Test")
-for i in range(1, 100):
-    statistic.update_and_save()
-    print("Saved!")
-# while True:
-#     timer.check()
-#     sleep(1)
+dht11 = DHT11(gpio_dht=2)
+#print(dht11.get_temperature())
+ultra_sensor = UltraSensor(echo=12, trigger=6, number_of_sample=10)
+print ultra_sensor.get_perfect_rang()
