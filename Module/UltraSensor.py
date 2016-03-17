@@ -26,8 +26,6 @@ class UltraSensor:
         GPIO.setup(self.GPIO_TRIGGER, GPIO.OUT)  # Trigger
         GPIO.setup(self.GPIO_ECHO, GPIO.IN)  # Echo
         GPIO.output(self.GPIO_TRIGGER, False)
-        # Allow module to settle
-        time.sleep(0.5)
 
     def get_ultra_sensor_rang(self):
         total_distances = 0
@@ -75,7 +73,7 @@ class UltraSensor:
 
                 i += 1
                 list_distance.append(distance)
-                time.sleep(0.2)
+                time.sleep(0.01)
 
             except TimeoutError:
                 print("Ultra sensor perfect time out!")
