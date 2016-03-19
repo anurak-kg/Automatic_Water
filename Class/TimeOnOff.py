@@ -7,3 +7,6 @@ class TimeOnOff:
         self.time_off = time_off
         self.time_on = time_on
         self.day = day
+
+    def get_data_json(self):
+        return {'day': self.time_off, 'time_off': self.time_on, 'time_on': self.day}

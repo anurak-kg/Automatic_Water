@@ -1,3 +1,4 @@
+# coding=utf-8
 import RPi.GPIO as GPIO
 from pymongo import MongoClient
 
@@ -45,5 +46,12 @@ class Relay:
     def insert_new_relay():
         mongo_client = MongoClient()
         mongo_database = mongo_client["smart_aqua"]
-        relay_collection = mongo_database.relay
-        relay_1 = {"name": "", "gpio": 10, "active": False, "timer": None, "status": False}
+        relay_collection = mongo_database["relays"]
+        relay_1 = {"name": u"สวิทย์ไฟฟ้า", "gpio": 10, "active": False, "timer": None, "status": False}
+        relay_2 = {"name": u"สวิทย์ไฟ 2", "gpio": 12, "active": False, "timer": None, "status": False}
+        relay_3 = {"name": u"สวิทย์น้ำเข้า", "gpio": 13, "active": False, "timer": None, "status": False}
+        relay_4 = {"name": u"สวิทย์น้ำออก", "gpio": 14, "active": False, "timer": None, "status": False}
+        relay_collection.insert_one(relay_1)
+        relay_collection.insert_one(relay_2)
+        relay_collection.insert_one(relay_3)
+        relay_collection.insert_one(relay_4)
