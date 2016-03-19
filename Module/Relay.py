@@ -1,4 +1,5 @@
 import RPi.GPIO as GPIO
+from pymongo import MongoClient
 
 from Class.Log import Log
 
@@ -39,3 +40,10 @@ class Relay:
         Log.new(Log.DEBUG, "Clear relay!")
         self.turn_off()
         GPIO.cleanup()
+
+    @staticmethod
+    def insert_new_relay():
+        mongo_client = MongoClient()
+        mongo_database = mongo_client["smart_aqua"]
+        relay_collection = mongo_database.relay
+        relay_1 = {"name": "", "gpio": 10, "active": False, "timer": None, "status": False}

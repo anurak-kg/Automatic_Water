@@ -1,4 +1,6 @@
 import datetime
+
+import psutil
 from pymongo import MongoClient
 
 from Class.RedisDatabase import RedisDatabase
@@ -29,6 +31,10 @@ class Statistic:
         # TEMPERATURE and HUMIDITY
         self.current_status[RedisDatabase.HUMIDITY] = float(self.redis_database.get(RedisDatabase.HUMIDITY))
         self.current_status[RedisDatabase.TEMPERATURE] = float(self.redis_database.get(RedisDatabase.TEMPERATURE))
+
+        # CPU
+
+        self.current_status[RedisDatabase.CPU_USAGE] = psutil.cpu_percent()
 
     def save(self):
         self.stat.insert_one(self.current_status)

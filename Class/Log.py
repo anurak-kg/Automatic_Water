@@ -22,7 +22,8 @@ class Log:
             }
             log.insert_one(log_data)
             if type_error in Log.ERROR:
-                print(str(description))
+                print("Log: " + str(description))
 
-        except Exception:
+        except Exception, e:
+            print(e)
             print("Error save logs")

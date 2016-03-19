@@ -4,6 +4,7 @@ from DisplayScreen import DisplayScreen
 
 
 class RedisDatabase:
+    CPU_USAGE = "cpu_usage"
     server_ip = "localhost"
     server_port = 6379
     SCREEN_MODE = "screen_location"
