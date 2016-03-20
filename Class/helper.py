@@ -4,6 +4,7 @@ import time
 from functools import wraps
 
 from dateutil import parser
+from pymongo import MongoClient
 
 from Class.RedisDatabase import RedisDatabase
 
@@ -43,6 +44,13 @@ def fn_timer(function):
 
     return function_timer
 
+
+def get_database_mongo():
+    mongo_client = MongoClient()
+    mongo_database = mongo_client["smart_aqua"]
+    return mongo_database
+
+
 def initial_mongodb():
     try:
         print("Initial Mongodb")
@@ -52,6 +60,7 @@ def initial_mongodb():
     except Exception, e:
         print("That's work!")
         print(e)
+
 
 def mode(nums):
     corresponding = {}

@@ -1,8 +1,11 @@
 # coding=utf-8
 import RPi.GPIO as GPIO
+import datetime
 from pymongo import MongoClient
 
+from Class import helper
 from Class.Log import Log
+from Class.TimeOnOff import TimeOnOff
 
 
 class Relay:
@@ -11,6 +14,7 @@ class Relay:
 
     def __init__(self, name, gpio, status, time):
 
+        self.active = None
         self.name = name
         self.time = time
         self.status = status
@@ -42,16 +46,36 @@ class Relay:
         self.turn_off()
         GPIO.cleanup()
 
+    def get_dict(self):
+        timers = []
+        for timer in self.time:
+            timers.append(timer.get_data_dict())
+        return {"name": self.name, "gpio": self.gpio, "active": self.active, "timer": timers,
+                "status": self.status}
+
+    @staticmethod
+    def get_relay_list():
+        database = helper.get_database_mongo()
+
+        return database.relays.find()
+
     @staticmethod
     def insert_new_relay():
         mongo_client = MongoClient()
         mongo_database = mongo_client["smart_aqua"]
         relay_collection = mongo_database["relays"]
-        relay_1 = {"name": u"สวิทย์ไฟฟ้า", "gpio": 10, "active": False, "timer": None, "status": False}
-        relay_2 = {"name": u"สวิทย์ไฟ 2", "gpio": 12, "active": False, "timer": None, "status": False}
-        relay_3 = {"name": u"สวิทย์น้ำเข้า", "gpio": 13, "active": False, "timer": None, "status": False}
-        relay_4 = {"name": u"สวิทย์น้ำออก", "gpio": 14, "active": False, "timer": None, "status": False}
-        relay_collection.insert_one(relay_1)
-        relay_collection.insert_one(relay_2)
-        relay_collection.insert_one(relay_3)
-        relay_collection.insert_one(relay_4)
+
+        relay1 = Relay(name=u"สวิทย์ไฟ 1",
+                       gpio=11,
+                       status=Relay.ACTIVATE,
+                       time=[TimeOnOff(128, datetime.time(3, 0, 0), datetime.time(3, 0, 0)),
+                             TimeOnOff(1, datetime.time(3, 0, 0), datetime.time(3, 0, 0))])
+
+        relay2 = Relay(name=u"สวิทย์ไฟ 2",
+                       gpio=11,
+                       status=Relay.ACTIVATE,
+                       time=[TimeOnOff(128, datetime.time(3, 0, 0), datetime.time(3, 0, 0)),
+                             TimeOnOff(1, datetime.time(3, 0, 0), datetime.time(3, 0, 0))])
+
+        relay_collection.insert_one(relay1.get_dict())
+        relay_collection.insert_one(relay2.get_dict())

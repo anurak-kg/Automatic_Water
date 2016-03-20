@@ -15,6 +15,18 @@ relay_list = [Relay(name="Relay1",
                     time=[TimeOnOff(128, datetime.time(3, 0, 0), datetime.time(3, 0, 0))])
               ]
 
+relay = Relay(name="Relay2",
+              gpio=11,
+              status=Relay.ACTIVATE,
+              time=[TimeOnOff(128, datetime.time(3, 0, 0), datetime.time(3, 0, 0)),
+                    TimeOnOff(1, datetime.time(3, 0, 0), datetime.time(3, 0, 0))])
+
+# print(Relay.insert_new_relay())
+lists = Relay.get_relay_list()
+#print len(lists)
+for document in lists:
+    print document
+# print(datetime.time(3, 0, 0).strftime("%H:%M:%S"))
 # print("logout: %i" % getattr(flags, day))
 # print(type(getattr(flags, day)))
 # print("ss")
@@ -30,7 +42,5 @@ relay_list = [Relay(name="Relay1",
 # #     sleep(1)
 #
 
-dht11 = DHT11(gpio_dht=2)
-#print(dht11.get_temperature())
-ultra_sensor = UltraSensor(echo=12, trigger=6, number_of_sample=10)
-print ultra_sensor.get_perfect_rang()
+#print TimeOnOff(128, datetime.time(3, 0, 0), datetime.time(3, 0, 0)).get_data_dict()
+# print(dht11.get_temperature())
