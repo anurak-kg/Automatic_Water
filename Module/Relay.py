@@ -12,8 +12,9 @@ class Relay:
     ACTIVATE = 1
     DEACTIVATE = 0
 
-    def __init__(self, name, gpio, status, time, is_timer, active=None):
+    def __init__(self, name, gpio, status, time, is_timer, active=None, object_id=None):
 
+        self.object_id = object_id
         self.is_timer = is_timer
         self.active = active
         self.name = name
@@ -57,8 +58,22 @@ class Relay:
     @staticmethod
     def get_relay_list():
         database = helper.get_database_mongo()
-
         return database.relays.find()
+
+    @staticmethod
+    def get_relay_object_list():
+
+        relay_list = []
+        database = helper.get_database_mongo()
+        relays = database.relays.find()
+
+        for relay_item in relays:
+            relay = Relay(gpio=relay_item["gpio"], is_timer=relay_item["gpio"], name=relay_item["name"],
+                          status=relay_item["status"], time=relay_item["timer"], active=relay_item["active"],
+                          object_id=relay_item["_id"])
+            relay_list.append(relay)
+
+        return relay_list
 
     @staticmethod
     def insert_new_relay():
