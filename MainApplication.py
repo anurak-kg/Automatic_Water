@@ -12,6 +12,7 @@ from Class import helper
 from Class.Log import Log
 from Class.RedisDatabase import RedisDatabase
 from Class.Statistic import Statistic
+from Class.Timer import Timer
 from DisplayScreen import DisplayScreen
 from Module.DHT11 import DHT11
 from Module.Display import Display
@@ -33,10 +34,11 @@ class MainApplication(object):
 
         self.config = configparser.ConfigParser()
         self.config.read("config.ini")
+        self.database = RedisDatabase()
 
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
-        self.database = RedisDatabase()
+
         self.pre_process()
         self.database.set_screen_mode(DisplayScreen.MAIN)
 
@@ -77,7 +79,6 @@ class MainApplication(object):
             sleep(1)
         print("Stopped!")
 
-
     def initial_hardware_module(self):
         self.ultra_sensor = UltraSensor(echo=12, trigger=6, number_of_sample=10)
 
@@ -100,6 +101,15 @@ class MainApplication(object):
             self.enable_water_level = True
         else:
             self.enable_water_level = bool(self.database.get(RedisDatabase.ENABLE_WATER_SENSOR))
+
+    def start_timer_thread(self):
+        try:
+            timer = Timer(config=self.config, redis_database=self.database)
+            timer.start()
+        except Exception, e:
+            print("ERROR start_timer_thread() 0x00003")
+            Log.new(Log.ERROR, "ERROR start_timer_thread 0x00003")
+            Log.new(Log.ERROR, "" + str(e))
 
     def hardware_water_sensor_process(self):
         global water_ranges
