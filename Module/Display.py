@@ -8,8 +8,11 @@ import datetime
 from PIL import ImageFont
 from RPi import GPIO
 
+from Class import helper
 from Class.Log import Log
 from Class.RedisDatabase import RedisDatabase
+from Class.helper import fn_timer
+from Module.Relay import Relay
 from lib_tft24T import TFT24T
 
 
@@ -17,7 +20,6 @@ class Display:
     def __init__(self, database, config):
         self.font = ImageFont.truetype('THSarabunNew.ttf', 24)
         self.TFT = TFT24T(spidev.SpiDev(), GPIO, landscape=True)
-
 
         self.config = config
         self.initial_display()
@@ -46,7 +48,7 @@ class Display:
         except Exception, e:
             Log.new(Log.ERROR, "Initial display process error : " + str(e))
 
-    # @fn_timer
+    @fn_timer
     def display_main(self):
         self.TFT.load_wallpaper("bg.jpg")
         self.draw_time()
@@ -74,13 +76,20 @@ class Display:
         pass
         # self.draw.text((10, 215), self.ip, fill=(32, 32, 32), font=self.font)
 
+    @fn_timer
     def relay_section_draw(self):
         x = 300
         y = 90
         r = 9
         text_x = 75
-        for i in range(1, 5):
-            self.draw.text((210, text_x), u"สวิทช์ " + str(i), fill=(32, 32, 32), font=self.font)
-            self.draw.ellipse((x - r, y - r, x + r, y + r), fill="red")
+        list_relay = Relay.get_relay_list()
+        for relay in list_relay:
+            if relay["status"] == 1:
+                color = "green"
+            else:
+                color = "red"
+            self.draw.text((210, text_x), relay["name"], fill=(32, 32, 32), font=self.font)
+
+            self.draw.ellipse((x - r, y - r, x + r, y + r), fill=color)
             y += 25
             text_x += 25

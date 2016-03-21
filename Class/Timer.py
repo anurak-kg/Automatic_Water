@@ -1,4 +1,5 @@
 import datetime
+import threading
 from time import sleep
 
 from Class import helper
@@ -6,8 +7,11 @@ from Class.FlagsDate import FlagsDay
 from Module.Relay import Relay
 
 
-class Timer:
+class Timer(threading.Thread):
+    SLEEP_MAIN_THREAD_SECOND = 0.1
+
     def __init__(self, relay_list):
+        super(Timer, self).__init__()
         self.relay_list = relay_list
 
     def check(self):
