@@ -46,6 +46,7 @@ class MainApplication(object):
         helper.initial_mongodb()
         self.statistic = Statistic()
         self.display = Display(self.database, self.config)
+        self.start_timer_thread()
         self.start()
 
     def start(self):
@@ -76,7 +77,7 @@ class MainApplication(object):
 
             if self.debug:
                 print("time process in " + str(elapsed_time) + " sec")
-            sleep(1)
+            #sleep(1)
         print("Stopped!")
 
     def initial_hardware_module(self):
@@ -103,6 +104,7 @@ class MainApplication(object):
             self.enable_water_level = bool(self.database.get(RedisDatabase.ENABLE_WATER_SENSOR))
 
     def start_timer_thread(self):
+        print("## start_timer_thread()")
         try:
             timer = Timer(config=self.config, redis_database=self.database)
             timer.start()

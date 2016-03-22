@@ -82,13 +82,13 @@ class Display:
         y = 90
         r = 9
         text_x = 75
-        list_relay = Relay.get_relay_list()
+        list_relay = Relay.get_relay_object_list()
         for relay in list_relay:
-            if relay["status"] == 1:
+            if relay.get_state() == 1:
                 color = "green"
             else:
                 color = "red"
-            self.draw.text((210, text_x), relay["name"], fill=(32, 32, 32), font=self.font)
+            self.draw.text((210, text_x), relay.name, fill=(32, 32, 32), font=self.font)
 
             self.draw.ellipse((x - r, y - r, x + r, y + r), fill=color)
             y += 25

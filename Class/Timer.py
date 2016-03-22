@@ -1,11 +1,7 @@
 import threading
-
 import datetime
-from RPi import GPIO
 from time import sleep
-
 from dateutil import parser
-
 from Class import helper
 from Class.FlagsDate import FlagsDay
 from Module.Relay import Relay
@@ -13,6 +9,7 @@ from Module.Relay import Relay
 
 class Timer(threading.Thread):
     SLEEP_MAIN_THREAD_SECOND = 0.1
+    DEBUG = True
 
     def __init__(self, redis_database, config):
         super(Timer, self).__init__()
@@ -22,7 +19,7 @@ class Timer(threading.Thread):
     def run(self):
         print("## Start timer thread!")
         while self.redis_database.get_app_running():
-        # for i in range(1, 100):
+            # for i in range(1, 100):
             self.check()
             sleep(self.SLEEP_MAIN_THREAD_SECOND)
 
@@ -37,8 +34,8 @@ class Timer(threading.Thread):
                 # get current time
                 today = datetime.date.today()
                 day = today.strftime("%a")
-
-                print("Relay =" + relay_item["name"])
+                if self.DEBUG:
+                    print("Relay =" + relay_item["name"])
 
                 if relay_item["is_timer"] is True:
 
@@ -49,17 +46,20 @@ class Timer(threading.Thread):
                             parser.parse(timer["time_on"]).time(),
                             parser.parse(timer["time_off"]).time())
                         current_relay_state = relay.get_state()
-                        print("Relay state = " + str(current_relay_state))
-                        print(getattr(flags, day))
-                        print time_checker
+                        if self.DEBUG:
+                            print("Relay state = " + str(current_relay_state))
+                            print(getattr(flags, day))
+                            print time_checker
 
                         if time_checker:
                             if current_relay_state == 0:
-                                print("Turn On")
+                                if self.DEBUG:
+                                    print("Turn On")
                                 relay.turn_on()
                         else:
                             if current_relay_state == 1:
                                 relay.turn_off()
-                                print("Turn Off")
+                                if self.DEBUG:
+                                    print("Turn Off")
 
                         sleep(1)
