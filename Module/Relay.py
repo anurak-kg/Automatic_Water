@@ -46,17 +46,22 @@ class Relay:
     def get_state(self):
         return GPIO.input(self.gpio)
 
-    def clear_relay(self):
+    @staticmethod
+    def clear_relay():
         Log.new(Log.DEBUG, "Clear relay!")
-        self.turn_off()
+        for relay in Relay.get_relay_object_list():
+            relay.turn_off()
         GPIO.cleanup()
 
     def get_dict(self):
         timers = []
-        for timer in self.time:
-            timers.append(timer.get_data_dict())
+        if self.time is None:
+            timers = None
+        else:
+            for timer in self.time:
+                timers.append(timer.get_data_dict())
         return {"name": self.name, "gpio": self.gpio, "active": self.active, "timer": timers,
-                "status": self.status, "is_timer": self.relay_type}
+                "status": self.status, "relay_type": self.relay_type}
 
     @staticmethod
     def get_relay_list():
@@ -71,7 +76,7 @@ class Relay:
         relays = database.relays.find()
 
         for relay_item in relays:
-            relay = Relay(gpio=relay_item["gpio"], relay_type=relay_item["type"], name=relay_item["name"],
+            relay = Relay(gpio=relay_item["gpio"], relay_type=relay_item["relay_type"], name=relay_item["name"],
                           status=relay_item["status"], time=relay_item["timer"], active=relay_item["active"],
                           object_id=relay_item["_id"])
             relay_list.append(relay)

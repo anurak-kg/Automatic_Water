@@ -25,41 +25,41 @@ class Timer(threading.Thread):
 
     def checker(self):
         for relay_item in Relay.get_relay_list():
-            flags = FlagsDay()
 
-            relay = Relay(gpio=relay_item["gpio"], relay_type=relay_item["gpio"], name=relay_item["name"],
+            relay = Relay(gpio=relay_item["gpio"], relay_type=relay_item["relay_type"], name=relay_item["name"],
                           status=relay_item["status"], time=relay_item["timer"], active=relay_item["active"],
                           object_id=relay_item["_id"])
-            if relay.status is 1:
-                # get current time
-                today = datetime.date.today()
-                day = today.strftime("%a")
-                if self.DEBUG:
-                    print("Relay =" + relay_item["name"])
+            if self.DEBUG:
+                print("#Relay = " + relay.name + "    #Type = " + str(relay.relay_type))
 
-                if relay_item["is_timer"] is True:
+            if relay.relay_type in Relay.TYPE_TIMER:
+                self.timer_checker(relay)
+            elif relay.relay_type in Relay.TYPE_SWITCH:
+                pass
 
-                    for timer in relay_item["timer"]:
-                        flags.asByte = timer["day"]
+            sleep(1)
 
-                        time_checker = getattr(flags, day) == 1 and helper.time_in_range(
-                            parser.parse(timer["time_on"]).time(),
-                            parser.parse(timer["time_off"]).time())
-                        current_relay_state = relay.get_state()
-                        if self.DEBUG:
-                            print("Relay state = " + str(current_relay_state))
-                            print(getattr(flags, day))
-                            print time_checker
-
-                        if time_checker:
-                            if current_relay_state == 0:
-                                if self.DEBUG:
-                                    print("Turn On")
-                                relay.turn_on()
-                        else:
-                            if current_relay_state == 1:
-                                relay.turn_off()
-                                if self.DEBUG:
-                                    print("Turn Off")
-
-                        sleep(1)
+    def timer_checker(self, relay):
+        # get current time
+        flags = FlagsDay()
+        today = datetime.date.today()
+        day = today.strftime("%a")
+        for timer in relay.time:
+            flags.asByte = timer["day"]
+            time_checker = getattr(flags, day) == 1 and helper.time_in_range(
+                parser.parse(timer["time_on"]).time(),
+                parser.parse(timer["time_off"]).time())
+            current_relay_state = relay.get_state()
+            if self.DEBUG:
+                print("Relay state = " + str(current_relay_state))
+                print(relay.name + "  checker is " + str(time_checker))
+            if time_checker:
+                if current_relay_state == 0:
+                    if self.DEBUG:
+                        print("Turn On")
+                    relay.turn_on()
+            else:
+                if current_relay_state == 1:
+                    relay.turn_off()
+                    if self.DEBUG:
+                        print("Turn Off")
