@@ -20,14 +20,14 @@ class Timer(threading.Thread):
         print("## Start timer thread!")
         while self.redis_database.get_app_running():
             # for i in range(1, 100):
-            self.check()
+            self.checker()
             sleep(self.SLEEP_MAIN_THREAD_SECOND)
 
-    def check(self):
+    def checker(self):
         for relay_item in Relay.get_relay_list():
             flags = FlagsDay()
 
-            relay = Relay(gpio=relay_item["gpio"], is_timer=relay_item["gpio"], name=relay_item["name"],
+            relay = Relay(gpio=relay_item["gpio"], relay_type=relay_item["gpio"], name=relay_item["name"],
                           status=relay_item["status"], time=relay_item["timer"], active=relay_item["active"],
                           object_id=relay_item["_id"])
             if relay.status is 1:
