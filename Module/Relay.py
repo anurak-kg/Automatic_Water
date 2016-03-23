@@ -17,8 +17,9 @@ class Relay:
     On = True
     Off = False
 
-    def __init__(self, name, gpio, status, time=None, relay_type=None, active=None, object_id=None):
+    def __init__(self, name, gpio, status, time=None, relay_type=None, active=None, object_id=None, force_on=None):
 
+        self.force_on = force_on
         self.object_id = object_id
         self.relay_type = relay_type
         self.active = active
@@ -63,7 +64,7 @@ class Relay:
             for timer in self.time:
                 timers.append(timer.get_data_dict())
         return {"name": self.name, "gpio": self.gpio, "active": self.active, "timer": timers,
-                "status": self.status, "relay_type": self.relay_type}
+                "status": self.status, "relay_type": self.relay_type, "force_on": self.force_on}
 
     @staticmethod
     def get_relay_list():
@@ -94,21 +95,25 @@ class Relay:
         relay1 = Relay(name=u"สวิทย์ไฟ 1",
                        gpio=26,
                        active=Relay.ACTIVATE,
+                       force_on=Relay.Off,
                        relay_type=Relay.TYPE_SWITCH)
 
         relay2 = Relay(name=u"Auto 2",
                        gpio=20,
                        relay_type=Relay.TYPE_TIMER,
                        active=Relay.ACTIVATE,
+                       force_on=Relay.Off,
                        time=[TimeOnOff(127, datetime.time(3, 0, 0), datetime.time(3, 0, 0))])
 
         relay3 = Relay(name=u"น้ำเข้า",
                        gpio=16,
+                       force_on=Relay.Off,
                        relay_type=Relay.TYPE_WATER_CHANGE,
                        active=Relay.ACTIVATE)
 
         relay4 = Relay(name=u"น้ำออก",
                        gpio=19,
+                       force_on=Relay.Off,
                        relay_type=Relay.TYPE_WATER_CHANGE,
                        active=Relay.ACTIVATE)
 
