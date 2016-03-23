@@ -4,6 +4,7 @@ from time import sleep
 from dateutil import parser
 from Class import helper
 from Class.FlagsDate import FlagsDay
+from Class.Log import Log
 from Module.Relay import Relay
 
 
@@ -57,13 +58,16 @@ class Timer(threading.Thread):
 
             if time_checker or relay.force_on == Relay.FORCE_ON:
                 if relay.force_on == Relay.FORCE_OFF and current_relay_state == Relay.ON:
+                    Log.debug(relay.name + " has turn by Force turn off")
                     print("Force Off")
                     relay.turn_off()
                 elif current_relay_state == Relay.OFF and not relay.force_on == Relay.FORCE_OFF:
+                    Log.debug(relay.name + " has turn by timer")
                     relay.turn_on()
 
             else:
                 if current_relay_state == Relay.ON:
+                    Log.debug(relay.name + " has turnoff by timer")
                     relay.turn_off()
 
     def switch_checker(self, relay):
@@ -74,7 +78,10 @@ class Timer(threading.Thread):
 
         if relay.force_on == Relay.FORCE_ON:
             if current_relay_state == Relay.OFF:
+                Log.debug(relay.name + " has turn on by user")
                 relay.turn_on()
         else:
             if current_relay_state == Relay.ON:
+                Log.debug(relay.name + " has turn off by user")
+
                 relay.turn_off()
