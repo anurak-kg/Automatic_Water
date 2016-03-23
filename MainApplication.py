@@ -27,6 +27,7 @@ class MainApplication(object):
         self.enable_dht11_sensor = True
         self.water_level_error_count = 0
         self.debug = False
+
         print("###################################")
         print("#######       Welcome       #######")
         print("####### " + APP_VERSION + " #######")
@@ -77,7 +78,7 @@ class MainApplication(object):
 
             if self.debug:
                 print("time process in " + str(elapsed_time) + " sec")
-            #sleep(1)
+                # sleep(1)
         print("Stopped!")
 
     def initial_hardware_module(self):
@@ -88,7 +89,9 @@ class MainApplication(object):
 
     def update_hardware_module(self):
         # WATER LEVEL Process
-        print self.enable_water_level
+        if self.debug:
+            print("water level enable us " + str(self.enable_water_level))
+
         if self.enable_water_level:
             self.hardware_water_sensor_process()
 
