@@ -48,7 +48,8 @@ class Display:
         except Exception, e:
             Log.new(Log.ERROR, "Initial display process error : " + str(e))
 
-    @fn_timer
+    # @fn_timer
+    # @fn_timer
     def display_main(self):
         self.TFT.load_wallpaper("bg.jpg")
         self.draw_time()
@@ -76,7 +77,7 @@ class Display:
         pass
         # self.draw.text((10, 215), self.ip, fill=(32, 32, 32), font=self.font)
 
-    @fn_timer
+    # @fn_timer
     def relay_section_draw(self):
         x = 300
         y = 90

@@ -20,7 +20,7 @@ def time_in_range(start, end):
     database = RedisDatabase()
 
     current_time = parser.parse(database.get("current_time")).time()
-    print current_time
+    # print current_time
     if start <= end:
         return start <= current_time <= end
     else:

@@ -26,7 +26,7 @@ class MainApplication(object):
     def __init__(self):
         self.enable_dht11_sensor = True
         self.water_level_error_count = 0
-        self.debug = True
+        self.debug = False
         print("###################################")
         print("#######       Welcome       #######")
         print("####### " + APP_VERSION + " #######")

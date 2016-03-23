@@ -9,7 +9,7 @@ from Module.Relay import Relay
 
 class Timer(threading.Thread):
     SLEEP_MAIN_THREAD_SECOND = 0.1
-    DEBUG = True
+    DEBUG = False
 
     def __init__(self, redis_database, config):
         super(Timer, self).__init__()
@@ -28,14 +28,14 @@ class Timer(threading.Thread):
 
             relay = Relay(gpio=relay_item["gpio"], relay_type=relay_item["relay_type"], name=relay_item["name"],
                           status=relay_item["status"], time=relay_item["timer"], active=relay_item["active"],
-                          object_id=relay_item["_id"])
+                          force_on=relay_item["force_on"], object_id=relay_item["_id"])
             if self.DEBUG:
                 print("#Relay = " + relay.name + "    #Type = " + str(relay.relay_type))
 
             if relay.relay_type in Relay.TYPE_TIMER:
                 self.timer_checker(relay)
             elif relay.relay_type in Relay.TYPE_SWITCH:
-                pass
+                self.switch_checker(relay)
 
             sleep(1)
 
@@ -53,13 +53,28 @@ class Timer(threading.Thread):
             if self.DEBUG:
                 print("Relay state = " + str(current_relay_state))
                 print(relay.name + "  checker is " + str(time_checker))
-            if time_checker:
-                if current_relay_state == 0:
-                    if self.DEBUG:
-                        print("Turn On")
-                    relay.turn_on()
-            else:
-                if current_relay_state == 1:
+                print("State = " + str(relay.force_on) + " state = " + str(current_relay_state))
+
+            if time_checker or relay.force_on == Relay.FORCE_ON:
+                if relay.force_on == Relay.FORCE_OFF and current_relay_state == Relay.ON:
+                    print("Force Off")
                     relay.turn_off()
-                    if self.DEBUG:
-                        print("Turn Off")
+                elif current_relay_state == Relay.OFF and not relay.force_on == Relay.FORCE_OFF:
+                    relay.turn_on()
+
+            else:
+                if current_relay_state == Relay.ON:
+                    relay.turn_off()
+
+    def switch_checker(self, relay):
+        current_relay_state = relay.get_state()
+        if self.DEBUG:
+            print("Relay state = " + str(current_relay_state))
+            print("State = " + str(relay.force_on) + " state = " + str(current_relay_state))
+
+        if relay.force_on == Relay.FORCE_ON:
+            if current_relay_state == Relay.OFF:
+                relay.turn_on()
+        else:
+            if current_relay_state == Relay.ON:
+                relay.turn_off()
