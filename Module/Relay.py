@@ -98,7 +98,7 @@ class Relay:
         relay1 = Relay(name=u"สวิทย์ไฟ 1",
                        gpio=26,
                        active=Relay.ACTIVATE,
-                       force_on=Relay.Off,
+                       force_on=Relay.OFF,
 
                        relay_type=Relay.TYPE_SWITCH)
 
@@ -106,18 +106,18 @@ class Relay:
                        gpio=20,
                        relay_type=Relay.TYPE_TIMER,
                        active=Relay.ACTIVATE,
-                       force_on=Relay.Off,
-                       time=[TimeOnOff(127, datetime.time(3, 0, 0), datetime.time(3, 0, 0))])
+                       force_on=Relay.OFF,
+                       time=[TimeOnOff(127, datetime.time(3, 0, 0), datetime.time(4, 0, 0))])
 
         relay3 = Relay(name=u"น้ำเข้า",
                        gpio=16,
-                       force_on=Relay.Off,
+                       force_on=Relay.OFF,
                        relay_type=Relay.TYPE_WATER_CHANGE,
                        active=Relay.ACTIVATE)
 
         relay4 = Relay(name=u"น้ำออก",
                        gpio=19,
-                       force_on=Relay.Off,
+                       force_on=Relay.OFF,
                        relay_type=Relay.TYPE_WATER_CHANGE,
                        active=Relay.ACTIVATE)
 
