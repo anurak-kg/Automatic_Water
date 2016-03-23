@@ -14,10 +14,12 @@ class Relay:
     TYPE_SWITCH = "switch"
     TYPE_TIMER = "timer"
     TYPE_WATER_CHANGE = "water_change"
-    On = True
-    Off = False
+    FORCE_ON = 2
+    FORCE_OFF = -1
+    ON = 1
+    OFF = 0
 
-    def __init__(self, name, gpio, status=Off, time=None, relay_type=None, active=None, object_id=None, force_on=None):
+    def __init__(self, name, gpio, status=OFF, time=None, relay_type=None, active=None, object_id=None, force_on=None):
 
         self.force_on = force_on
         self.object_id = object_id
