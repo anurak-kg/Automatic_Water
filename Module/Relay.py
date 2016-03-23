@@ -39,14 +39,14 @@ class Relay:
             print("Error can't not found GPIO")
         else:
             GPIO.output(self.gpio, GPIO.HIGH)
-            Log.new(Log.DEBUG, "Turn On!" + self.name + " at gpio = " + str(self.gpio))
+            Log.new(Log.DEBUG, "Turn On!  > " + self.name + " < at gpio = " + str(self.gpio))
 
     def turn_off(self):
         if self.gpio is None:
             print("Error can't not found GPIO")
         else:
             GPIO.output(self.gpio, GPIO.LOW)
-            Log.new(Log.DEBUG, "Turn Off! " + self.name + "  at gpio = " + str(self.gpio))
+            Log.new(Log.DEBUG, "Turn Off! > " + self.name + " <   at gpio = " + str(self.gpio))
 
     def get_state(self):
         return GPIO.input(self.gpio)
