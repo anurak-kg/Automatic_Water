@@ -51,7 +51,7 @@ class MainApplication(object):
         self.start()
 
     def start(self):
-        print("Start Main Thread!")
+        print("### Start Main Thread!")
         self.database.set_app_running(True)
 
         while self.database.get_app_running():
@@ -107,7 +107,6 @@ class MainApplication(object):
             self.enable_water_level = bool(self.database.get(RedisDatabase.ENABLE_WATER_SENSOR))
 
     def start_timer_thread(self):
-        print("## start_timer_thread()")
         try:
             timer = Timer(config=self.config, redis_database=self.database)
             timer.start()

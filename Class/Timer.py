@@ -18,7 +18,7 @@ class Timer(threading.Thread):
         self.config = config
 
     def run(self):
-        print("## Start timer thread!")
+        print("### Start timer thread!")
         while self.redis_database.get_app_running():
             # for i in range(1, 100):
             self.checker()
