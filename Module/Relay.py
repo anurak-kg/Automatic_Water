@@ -14,6 +14,8 @@ class Relay:
     TYPE_SWITCH = "switch"
     TYPE_TIMER = "timer"
     TYPE_WATER_CHANGE = "water_change"
+    On = True
+    Off = False
 
     def __init__(self, name, gpio, status, time=None, relay_type=None, active=None, object_id=None):
 
@@ -91,24 +93,24 @@ class Relay:
         relay_collection.remove()
         relay1 = Relay(name=u"สวิทย์ไฟ 1",
                        gpio=26,
-                       status=Relay.ACTIVATE,
+                       active=Relay.ACTIVATE,
                        relay_type=Relay.TYPE_SWITCH)
 
         relay2 = Relay(name=u"Auto 2",
                        gpio=20,
                        relay_type=Relay.TYPE_TIMER,
-                       status=Relay.ACTIVATE,
+                       active=Relay.ACTIVATE,
                        time=[TimeOnOff(127, datetime.time(3, 0, 0), datetime.time(3, 0, 0))])
 
         relay3 = Relay(name=u"น้ำเข้า",
                        gpio=16,
                        relay_type=Relay.TYPE_WATER_CHANGE,
-                       status=Relay.ACTIVATE)
+                       active=Relay.ACTIVATE)
 
         relay4 = Relay(name=u"น้ำออก",
                        gpio=19,
                        relay_type=Relay.TYPE_WATER_CHANGE,
-                       status=Relay.ACTIVATE)
+                       active=Relay.ACTIVATE)
 
         relay_collection.insert_one(relay1.get_dict())
         relay_collection.insert_one(relay2.get_dict())
