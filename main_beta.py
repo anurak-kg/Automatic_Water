@@ -9,7 +9,8 @@ if __name__ == "__main__":
     try:
         MainApplication()
 
-    except KeyboardInterrupt:
+    except Exception, e:
+        print(e)
         database.set_app_running(False)
         Log.new(Log.DEBUG, "###  Exit application! ###")
         print("Exiting....")
