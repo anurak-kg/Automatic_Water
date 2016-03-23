@@ -81,6 +81,7 @@ class Relay:
         for relay_item in relays:
             relay = Relay(gpio=relay_item["gpio"], relay_type=relay_item["relay_type"], name=relay_item["name"],
                           status=relay_item["status"], time=relay_item["timer"], active=relay_item["active"],
+                          force_on=relay_item["force_on"],
                           object_id=relay_item["_id"])
             relay_list.append(relay)
 
