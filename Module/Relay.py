@@ -17,7 +17,7 @@ class Relay:
     On = True
     Off = False
 
-    def __init__(self, name, gpio, status, time=None, relay_type=None, active=None, object_id=None, force_on=None):
+    def __init__(self, name, gpio, status=Off, time=None, relay_type=None, active=None, object_id=None, force_on=None):
 
         self.force_on = force_on
         self.object_id = object_id
@@ -97,6 +97,7 @@ class Relay:
                        gpio=26,
                        active=Relay.ACTIVATE,
                        force_on=Relay.Off,
+
                        relay_type=Relay.TYPE_SWITCH)
 
         relay2 = Relay(name=u"Auto 2",
