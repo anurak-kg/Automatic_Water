@@ -1,0 +1,36 @@
+{% extends "main.html" %}
+{% block content %}
+<div class="box">
+    <div class="box-header with-border">
+        <h3 class="box-title">จัดการไฟฟ้า</h3>
+
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
+                    title="Collapse">
+                <i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
+                <i class="fa fa-times"></i></button>
+        </div>
+    </div>
+    <div class="box-body">
+        Start creating your amazing application!
+        <ul>
+            {% for relay in relay_list %}
+            <li>{{ escape(relay.name) }}
+
+                {% if relay.get_state() == 1 %}
+                <span class="label label-success">On</span>
+                <a href="/relay?type=off&id={{relay.object_id}}" class="btn btn-danger" role="button">ปิด</a>
+
+                {% else %}
+                <span class="label label-danger">Off</span>
+                <a href="/relay?type=on&id={{relay.object_id}}" class="btn btn-success" role="button">เปิด</a>
+
+                {% end %}
+
+            </li>
+            {% end %}
+        </ul>
+    </div>
+</div>
+{% end %}

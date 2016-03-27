@@ -54,15 +54,7 @@ class Display:
         self.TFT.load_wallpaper("bg.jpg")
         self.draw_time()
         self.draw_ip()
-        title_font_color = (32, 32, 32)
-        self.draw.text((10, 75), u'ระดับน้ำ :  {:6.2f} cm'.format(self.database.get_water_level()), title_font_color,
-                       font=self.font)
-        self.draw.text((10, 100), u'อุณหภูมิ : {:6.1f} °C'.format(float(self.database.get(RedisDatabase.TEMPERATURE))),
-                       title_font_color, font=self.font)
-
-        self.draw.text((10, 125), u'ความชื่น : {:6.1f} rH'.format(float(self.database.get(RedisDatabase.HUMIDITY))),
-                       title_font_color, font=self.font)
-
+        self.draw_main_text()
         self.relay_section_draw()
         self.TFT.display()
 
@@ -94,3 +86,20 @@ class Display:
             self.draw.ellipse((x - r, y - r, x + r, y + r), fill=color)
             y += 25
             text_x += 25
+
+    def draw_main_text(self):
+        try:
+            title_font_color = (32, 32, 32)
+
+            self.draw.text((10, 75), u'ระดับน้ำ :  {:6.2f} cm'.format(self.database.get_water_level()),
+                           title_font_color,
+                           font=self.font)
+
+            self.draw.text((10, 100),
+                           u'อุณหภูมิ : {:6.1f} °C'.format(float(self.database.get(RedisDatabase.TEMPERATURE))),
+                           title_font_color, font=self.font)
+
+            self.draw.text((10, 125), u'ความชื่น : {:6.1f} rH'.format(float(self.database.get(RedisDatabase.HUMIDITY))),
+                           title_font_color, font=self.font)
+        except Exception, e:
+            print(e.message)

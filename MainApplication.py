@@ -14,8 +14,7 @@ from DisplayScreen import DisplayScreen
 from Module.DHT11 import DHT11
 from Module.Display import Display
 from Module.UltraSensor import UltraSensor
-from lib_tft24T import TFT24T
-from test import Test
+
 
 APP_VERSION = "0.0.1 Development  "
 
@@ -24,7 +23,7 @@ class MainApplication(object):
     def __init__(self):
         self.enable_dht11_sensor = True
         self.water_level_error_count = 0
-        self.debug = True
+        self.debug = False
 
         print("###################################")
         print("#######       Welcome       #######")
@@ -46,8 +45,8 @@ class MainApplication(object):
         self.statistic = Statistic()
         self.display = Display(self.database, self.config)
         self.start_timer_thread()
-        self.webserver = Test()
-        self.webserver.start()
+        # self.webserver = Test()
+        # self.webserver.start()
         self.start()
 
     def start(self):

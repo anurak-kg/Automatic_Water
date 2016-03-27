@@ -16,10 +16,10 @@ def build_dict(seq, key):
 
 
 def time_in_range(start, end):
-    # current_time = datetime.datetime.today().time()
+    current_time = datetime.datetime.today().time()
     database = RedisDatabase()
 
-    current_time = parser.parse(database.get("current_time")).time()
+    # current_time = parser.parse(database.get("current_time")).time()
     # print current_time
     if start <= end:
         return start <= current_time <= end

@@ -6,11 +6,9 @@ from Module.Relay import Relay
 if __name__ == "__main__":
     database = RedisDatabase()
     database.set_app_running(True)
-    try:
-        MainApplication()
 
-    except Exception, e:
-        print(e)
+
+    def exit_application():
         database.set_app_running(False)
         Log.new(Log.DEBUG, "###  Exit application! ###")
         print("Exiting....")
@@ -21,4 +19,15 @@ if __name__ == "__main__":
         print("##########################")
         print("#######  Goodbye !!#######")
         print("##########################")
+
+
+    try:
+        MainApplication()
+
+    except Exception, e:
+        exit_application()
+        print(e)
         raise
+    finally:
+        print("final")
+        exit_application()
