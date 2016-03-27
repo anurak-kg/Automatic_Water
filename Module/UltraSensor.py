@@ -3,7 +3,7 @@ import time
 import RPi.GPIO as GPIO
 import configparser
 from Class.RedisDatabase import RedisDatabase
-from Class.Timeout import TimeoutError, timeout
+from Class.Timeout import TimeoutError
 
 
 class UltraSensor:

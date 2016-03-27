@@ -1,5 +1,4 @@
 import ctypes
-import datetime
 
 c_uint8 = ctypes.c_uint8
 

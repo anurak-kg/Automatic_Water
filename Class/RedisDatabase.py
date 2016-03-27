@@ -29,7 +29,7 @@ class RedisDatabase:
 
     def get_water_level(self):
         water_level = self.redis.get(self.WATER_LEVEL)
-        if water_level in "None":
+        if water_level is None or water_level in "None":
             return 0.000
         else:
             return float(water_level)
@@ -41,7 +41,10 @@ class RedisDatabase:
         return int(self.redis.get(self.SCREEN_MODE))
 
     def get(self, name):
-        return self.redis.get(name=name)
+        val = self.redis.get(name=name)
+        if val is None or val in "None":
+            return None
+        return val
 
     def set(self, name, value):
         self.redis.set(name, value)
