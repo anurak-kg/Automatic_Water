@@ -1,6 +1,8 @@
 # coding=utf-8
 import RPi.GPIO as GPIO
 import datetime
+
+from bson import ObjectId
 from pymongo import MongoClient
 
 from Class import helper
@@ -9,6 +11,7 @@ from Class.TimeOnOff import TimeOnOff
 
 
 class Relay:
+    FORCE_DISABLE = 0
     ACTIVATE = 1
     DEACTIVATE = 0
     TYPE_SWITCH = "switch"
@@ -41,6 +44,9 @@ class Relay:
             GPIO.output(self.gpio, GPIO.HIGH)
             Log.new(Log.DEBUG, "Turn On!  > " + self.name + " < at gpio = " + str(self.gpio))
 
+    def get_object_id(self):
+        return str(self.object_id)
+
     def turn_off(self):
         if self.gpio is None:
             print("Error can't not found GPIO")
@@ -55,8 +61,19 @@ class Relay:
     def clear_relay():
         Log.new(Log.DEBUG, "Clear relay!")
         for relay in Relay.get_relay_object_list():
+            Relay.set_force_on(relay.get_object_id(), Relay.FORCE_DISABLE)
             relay.turn_off()
         GPIO.cleanup()
+
+    @staticmethod
+    def set_force_on(object_id, value):
+        db_client = helper.get_database_mongo()
+        db_client.relays.update({
+            '_id': ObjectId(object_id)}, {
+            '$set': {
+                'force_on': value
+            }}, upsert=False)
+        Log.debug("Set Force on =" + str(value) + " Relay id=" + object_id)
 
     def get_dict(self):
         timers = []

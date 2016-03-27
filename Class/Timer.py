@@ -10,7 +10,7 @@ from Module.Relay import Relay
 
 class Timer(threading.Thread):
     SLEEP_MAIN_THREAD_SECOND = 0.4
-    DEBUG = True
+    DEBUG = False
 
     def __init__(self, redis_database, config):
         super(Timer, self).__init__()

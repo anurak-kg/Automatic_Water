@@ -11,10 +11,11 @@ if __name__ == "__main__":
     def exit_application():
         database.set_app_running(False)
         Log.new(Log.DEBUG, "###  Exit application! ###")
+        Relay.clear_relay()
+
         print("Exiting....")
         print("Current App Status = " + str(database.get_app_running()))
         print("##########################")
-        Relay.clear_relay()
         print("####### Clear relay ######")
         print("##########################")
         print("#######  Goodbye !!#######")

@@ -19,23 +19,15 @@ class RelayHandler(tornado.web.RequestHandler):
         from Module.Relay import Relay
         object_id = self.get_argument("id", "None")
         relay_action = self.get_argument("type", "None")
+
         if object_id not in "None":
-            db_client = helper.get_database_mongo()
+
             if relay_action in "off":
-                db_client.relays.update({
-                    '_id': ObjectId(object_id)}, {
-                    '$set': {
-                        'force_on': Relay.FORCE_OFF
-                    }}, upsert=False)
-                Log.debug("Force OFF Relay id=" + object_id)
+                Relay.set_force_on(object_id, Relay.FORCE_OFF)
 
             if relay_action in "on":
-                db_client.relays.update({
-                    '_id': ObjectId(object_id)}, {
-                    '$set': {
-                        'force_on': Relay.FORCE_ON
-                    }}, upsert=False)
-                Log.debug("Force ON Relay id=" + object_id)
+                Relay.set_force_on(object_id, Relay.FORCE_ON)
+
             self.redirect('/relay')
 
         relay_list = Relay.get_relay_object_list()
