@@ -3,15 +3,31 @@ import threading
 
 import tornado.ioloop
 import tornado.web
+import demjson
 from bson.objectid import ObjectId
 
 from Class import helper
 from Class.Log import Log
+from Class.RedisDatabase import RedisDatabase
 
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
         self.render("index.html")
+
+
+class RealTimeChartHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.render("realtime_chart.html")
+
+
+class AjaxDataHandler(tornado.web.RequestHandler):
+    def get(self):
+        redis = RedisDatabase()
+        type_data = self.get_argument("type", "None")
+        if type_data in "real":
+            self.write(demjson.encode({"water_level": redis.get_water_level()}))
+        # self.render("realtime_chart.html")
 
 
 class RelayHandler(tornado.web.RequestHandler):
@@ -52,6 +68,8 @@ class WebServer(threading.Thread):
         app = tornado.web.Application([
             (r"/", MainHandler),
             (r"/relay", RelayHandler),
+            (r"/real", RealTimeChartHandler),
+            (r"/ajax_data", AjaxDataHandler),
         ], **settings)
         app.listen(self.port)
 
